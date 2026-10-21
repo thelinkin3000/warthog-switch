@@ -20,9 +20,11 @@ This repository holds only the Switch's own code: the game is the
 ## Status
 
 **In development** by thelinkin3000 and puginatux. There is no release yet.
-The port's files arrive in this repository's first pull request; until then
-this is the repository's skeleton, and the build stops with a message saying
-so.
+The port is here: the game's guest image with a deko3d renderer, the host
+that runs it as homebrew, the shader cache with deko3d's compiler built in,
+and internet play ([port/switch/README.md](port/switch/README.md)). Its
+settings screens and gyro aiming wait on changes to the game's shared code,
+which go to the game first.
 
 ## What you'll need
 
@@ -32,7 +34,9 @@ so.
   Halo you own. They are never included or shared here, on the site or on
   the Discord.
 - **To build it:** [devkitPro](https://devkitpro.org) with devkitA64,
-  libnx and deko3d, and Python 3 and Ninja.
+  libnx, deko3d and the Switch portlibs (SDL2, Mesa), the Android NDK for
+  the game's half, and Python 3, Ninja and clang. For the shader compiler
+  in the program: meson, flex, bison 3 and Python's mako.
 
 ## Building it yourself
 
@@ -49,8 +53,10 @@ targets to it; the game's
 "Console ports", has the layout and the options every console takes.
 devkitPro is found at `--devkitpro DIR`, `DEVKITPRO`, or `/opt/devkitpro`.
 
-`tools/switch_package.py` lays out the build and your maps for the SD card
-(`sd:/switch/halo/`).
+`tools/switch_package.py` lays out the build (the program and the game's
+image) and your maps for the SD card (`sd:/switch/ChupaThingyCE/`), and
+`tools/switch_deploy.py` sends a build to a console over the Homebrew
+Menu's FTP server.
 
 After a `git pull`, run `git submodule update` to move the game to the
 version this repository uses.
@@ -73,9 +79,11 @@ is in [LICENSE](LICENSE).
 - **The Switch port** is thelinkin3000's work, contributed under
   GPL-3.0-or-later.
 - **The game** (`chupathingyce/`) has its own license notes in its README.
-- **Third-party code** keeps its own license, which goes beside it. The
-  build links devkitPro's libnx (ISC) and deko3d (zlib) from your devkitPro
-  install; they are not included here.
+- **Third-party code** keeps its own license, which goes beside it:
+  nanosvg (zlib) in `port/switch/third_party`. The build links devkitPro's
+  libnx (ISC) and deko3d (zlib) from your devkitPro install, and builds
+  deko3d's shader compiler UAM (zlib) into the program from its own
+  download; they are not included here.
 - **Halo itself is not covered.** The license covers the work of this
   repository's and Chupathingy's authors. It gives no rights in Halo, its
   maps or anything else Microsoft owns.
